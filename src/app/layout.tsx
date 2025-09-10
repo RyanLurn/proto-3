@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Providers } from "@/components/providers";
+import { AppSidebar } from "@/features/sidebar/components/main";
+import { AppSidebarTrigger } from "@/features/sidebar/components/trigger";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +35,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          {children}
+          <AppSidebar />
+          <main className="h-screen w-screen">
+            <AppSidebarTrigger className="fixed top-2 left-2" />
+            {children}
+          </main>
           <ModeToggle className="fixed top-2 right-2" />
         </Providers>
       </body>
