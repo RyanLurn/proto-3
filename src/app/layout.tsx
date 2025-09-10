@@ -1,3 +1,4 @@
+import { ReactScanner } from "@/components/react-scanner";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
@@ -27,6 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <ReactScanner />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
