@@ -1,0 +1,17 @@
+pre-push:
+  parallel: true
+  jobs:
+    - name: check types
+      run: pnpm run check-types
+
+    - name: lint
+      run: pnpm run lint
+
+    - name: check format
+      run: pnpm run format:check
+
+pre-commit:
+  commands:
+    format:
+      run: pnpm run format
+      stage_fixed: true
