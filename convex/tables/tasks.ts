@@ -13,4 +13,4 @@ const taskSchema = {
 
 const tasksTable = defineTable(taskSchema).index("by_status", ["status"]);
 
-export { tasksTable };
+export { taskSchema, tasksTable };
