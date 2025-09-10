@@ -49,5 +49,5 @@ jobs:
       - name: Install dependencies with pnpm
         run: pnpm install
 
-      - name: Run command with pnpm
+      - name: Run ${{ matrix.command }} command with pnpm
         run: pnpm run ${{ matrix.command }}
