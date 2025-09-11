@@ -1,3 +1,4 @@
+import systemFields from "backend/helpers/systemFields";
 import { taskSchema } from "backend/tables/tasks";
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
@@ -14,9 +15,31 @@ const create = mutation({
 });
 
 const list = query({
+  returns: v.array(
+    v.object({
+      ...systemFields("tasks"),
+      ...taskSchema
+    })
+  ),
   handler: async ctx => {
-    const tasks = await ctx.db.query("tasks").collect();
-    return tasks;
+    const inProgress = await ctx.db
+      .query("tasks")
+      .withIndex("by_status", q => q.eq("status", "in-progress"))
+      .collect();
+
+    const planned = await ctx.db
+      .query("tasks")
+      .withIndex("by_status", q => q.eq("status", "planned"))
+      .collect();
+
+    const completed = await ctx.db
+      .query("tasks")
+      .withIndex("by_status", q => q.eq("status", "completed"))
+      .collect();
+
+    const orderedTasks = [...inProgress, ...planned, ...completed];
+
+    return orderedTasks;
   }
 });
 

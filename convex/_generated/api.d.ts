@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as helpers_systemFields from "../helpers/systemFields.js";
 import type * as tables_tasks from "../tables/tasks.js";
 import type * as task from "../task.js";
 
@@ -25,6 +26,7 @@ import type * as task from "../task.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "helpers/systemFields": typeof helpers_systemFields;
   "tables/tasks": typeof tables_tasks;
   task: typeof task;
 }>;
