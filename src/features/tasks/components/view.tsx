@@ -2,6 +2,7 @@
 
 import { api } from "backend/_generated/api";
 import { type Preloaded, usePreloadedQuery } from "convex/react";
+import { NewTask } from "@/features/tasks/components/new-task";
 import { Task } from "@/features/tasks/components/task";
 
 function TasksView({
@@ -12,10 +13,11 @@ function TasksView({
   const tasks = usePreloadedQuery(preloadedTasks);
 
   return (
-    <div className="mx-auto mt-10 flex h-full w-full max-w-xl flex-col gap-3 overflow-y-auto">
-      <h1 className="mb-10 scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+    <div className="mx-auto flex h-full w-full max-w-xl flex-col gap-3 overflow-y-auto pt-10">
+      <h1 className="mb-5 scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
         Tasks Manager
       </h1>
+      <NewTask className="mb-3 self-center" />
       {tasks.map(task => (
         <Task key={task._id} task={task} className="w-full" />
       ))}
