@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { api } from "backend/_generated/api";
 import type { Doc } from "backend/_generated/dataModel";
@@ -6,7 +7,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { TaskOptions } from "@/features/tasks/components/task-options";
 import { cn } from "@/lib/utils";
 
-function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
+const Task = memo(function Task({
+  className,
+  _id,
+  title,
+  description,
+  status
+}: { className?: string } & Omit<Doc<"tasks">, "_creationTime">) {
   const updateStatus = useMutation(api.task.updateStatus).withOptimisticUpdate(
     (localStore, args) => {
       const { taskId, newStatus } = args;
@@ -22,7 +29,7 @@ function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
 
   async function handleCheck(checked: CheckedState) {
     await updateStatus({
-      taskId: task._id,
+      taskId: _id,
       newStatus: checked ? "completed" : "planned"
     });
   }
@@ -36,17 +43,17 @@ function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
     >
       <Checkbox
         id="toggle-2"
-        checked={task.status === "completed"}
+        checked={status === "completed"}
         onCheckedChange={checked => void handleCheck(checked)}
         className="data-[state=checked]:border-green-600 data-[state=checked]:bg-green-600 data-[state=checked]:text-white dark:data-[state=checked]:border-green-700 dark:data-[state=checked]:bg-green-700"
       />
       <div className="grid gap-1.5 font-normal">
-        <p className="text-sm leading-none font-medium">{task.title}</p>
-        <p className="text-sm text-muted-foreground">{task.description}</p>
+        <p className="text-sm leading-none font-medium">{title}</p>
+        <p className="text-sm text-muted-foreground">{description}</p>
       </div>
-      <TaskOptions className="ml-auto" taskId={task._id} />
+      <TaskOptions className="ml-auto" taskId={_id} />
     </div>
   );
-}
+});
 
 export { Task };
