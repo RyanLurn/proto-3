@@ -1,5 +1,5 @@
 import systemFields from "backend/helpers/systemFields";
-import { taskSchema } from "backend/tables/tasks";
+import { taskSchema, taskStatus } from "backend/tables/tasks";
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
@@ -43,4 +43,15 @@ const list = query({
   }
 });
 
-export { create, list };
+const updateStatus = mutation({
+  args: {
+    taskId: v.id("tasks"),
+    newStatus: taskStatus
+  },
+  returns: v.null(),
+  handler: async (ctx, { taskId, newStatus }) => {
+    await ctx.db.patch(taskId, { status: newStatus });
+  }
+});
+
+export { create, list, updateStatus };
