@@ -1,8 +1,20 @@
+import type { CheckedState } from "@radix-ui/react-checkbox";
+import { api } from "backend/_generated/api";
 import type { Doc } from "backend/_generated/dataModel";
+import { useMutation } from "convex/react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
 function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
+  const updateStatus = useMutation(api.task.updateStatus);
+
+  async function handleCheck(checked: CheckedState) {
+    await updateStatus({
+      taskId: task._id,
+      newStatus: checked ? "completed" : "planned"
+    });
+  }
+
   return (
     <div
       className={cn(
@@ -13,6 +25,7 @@ function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
       <Checkbox
         id="toggle-2"
         checked={task.status === "completed"}
+        onCheckedChange={checked => void handleCheck(checked)}
         className="data-[state=checked]:border-green-600 data-[state=checked]:bg-green-600 data-[state=checked]:text-white dark:data-[state=checked]:border-green-700 dark:data-[state=checked]:bg-green-700"
       />
       <div className="grid gap-1.5 font-normal">
