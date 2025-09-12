@@ -22,24 +22,8 @@ const list = query({
     })
   ),
   handler: async ctx => {
-    const inProgress = await ctx.db
-      .query("tasks")
-      .withIndex("by_status", q => q.eq("status", "in-progress"))
-      .collect();
-
-    const planned = await ctx.db
-      .query("tasks")
-      .withIndex("by_status", q => q.eq("status", "planned"))
-      .collect();
-
-    const completed = await ctx.db
-      .query("tasks")
-      .withIndex("by_status", q => q.eq("status", "completed"))
-      .collect();
-
-    const orderedTasks = [...inProgress, ...planned, ...completed];
-
-    return orderedTasks;
+    const tasks = await ctx.db.query("tasks").collect();
+    return tasks;
   }
 });
 

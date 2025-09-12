@@ -6,7 +6,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
 function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
-  const updateStatus = useMutation(api.task.updateStatus);
+  const updateStatus = useMutation(api.task.updateStatus).withOptimisticUpdate(
+    (localStore, args) => {
+      const { taskId, newStatus } = args;
+      const currentTasks = localStore.getQuery(api.task.list);
+      if (currentTasks !== undefined) {
+        const newTasks = currentTasks.map(task =>
+          task._id === taskId ? { ...task, status: newStatus } : task
+        );
+        localStore.setQuery(api.task.list, {}, newTasks);
+      }
+    }
+  );
 
   async function handleCheck(checked: CheckedState) {
     await updateStatus({

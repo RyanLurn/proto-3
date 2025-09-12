@@ -4,6 +4,7 @@ import { api } from "backend/_generated/api";
 import { type Preloaded, usePreloadedQuery } from "convex/react";
 import { NewTask } from "@/features/tasks/components/new-task";
 import { Task } from "@/features/tasks/components/task";
+import { sortTasks } from "@/features/tasks/utils/sort-tasks";
 
 function TasksView({
   preloadedTasks
@@ -18,7 +19,7 @@ function TasksView({
         Tasks Manager
       </h1>
       <NewTask className="mb-3 self-center" />
-      {tasks.map(task => (
+      {sortTasks(tasks).map(task => (
         <Task key={task._id} task={task} className="w-full" />
       ))}
     </div>
