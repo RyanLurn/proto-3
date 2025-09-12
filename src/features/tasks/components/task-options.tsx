@@ -2,6 +2,7 @@ import { api } from "backend/_generated/api";
 import type { Id } from "backend/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { Ellipsis } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,7 +30,12 @@ function TaskOptions({
   );
 
   async function handleDelete() {
-    await deleteOne({ taskId });
+    try {
+      await deleteOne({ taskId });
+    } catch (error) {
+      console.error("Failed to delete task", error);
+      toast.error("Failed to delete task");
+    }
   }
 
   return (

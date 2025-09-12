@@ -3,6 +3,7 @@ import type { CheckedState } from "@radix-ui/react-checkbox";
 import { api } from "backend/_generated/api";
 import type { Doc } from "backend/_generated/dataModel";
 import { useMutation } from "convex/react";
+import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TaskOptions } from "@/features/tasks/components/task-options";
 import { cn } from "@/lib/utils";
@@ -28,10 +29,15 @@ const Task = memo(function Task({
   );
 
   async function handleCheck(checked: CheckedState) {
-    await updateStatus({
-      taskId: _id,
-      newStatus: checked ? "completed" : "planned"
-    });
+    try {
+      await updateStatus({
+        taskId: _id,
+        newStatus: checked ? "completed" : "planned"
+      });
+    } catch (error) {
+      console.error("Failed to update task status", error);
+      toast.error("Failed to update task status");
+    }
   }
 
   return (
@@ -42,7 +48,7 @@ const Task = memo(function Task({
       )}
     >
       <Checkbox
-        id="toggle-2"
+        id={_id}
         checked={status === "completed"}
         onCheckedChange={checked => void handleCheck(checked)}
         className="data-[state=checked]:border-green-600 data-[state=checked]:bg-green-600 data-[state=checked]:text-white dark:data-[state=checked]:border-green-700 dark:data-[state=checked]:bg-green-700"

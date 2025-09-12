@@ -20,14 +20,7 @@ function TasksView({
       </h1>
       <NewTask className="mb-3 self-center" />
       {sortTasks(tasks).map(task => (
-        <Task
-          key={task._id}
-          className="w-full"
-          _id={task._id}
-          title={task.title}
-          description={task.description}
-          status={task.status}
-        />
+        <Task key={task._id} className="w-full" {...task} />
       ))}
     </div>
   );

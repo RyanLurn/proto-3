@@ -4,6 +4,7 @@ import { useState } from "react";
 import { api } from "backend/_generated/api";
 import { useMutation } from "convex/react";
 import { Loader2Icon } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -30,15 +31,23 @@ function NewTask({ className }: { className?: string }) {
       return;
     }
     setIsCreating(true);
-    await createTask({
-      newTask: {
-        title: title.trim(),
-        description: description.trim(),
-        status: "planned"
-      }
-    });
-    setIsCreating(false);
-    setOpen(false);
+    try {
+      await createTask({
+        newTask: {
+          title: title.trim(),
+          description: description.trim(),
+          status: "planned"
+        }
+      });
+      setTitle("");
+      setDescription("");
+      setOpen(false);
+    } catch (error) {
+      console.error("Failed to create task", error);
+      toast.error("Failed to create task");
+    } finally {
+      setIsCreating(false);
+    }
   }
 
   return (

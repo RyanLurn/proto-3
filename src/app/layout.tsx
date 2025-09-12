@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Providers } from "@/components/providers";
+import { SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/features/sidebar/components/main";
 import { AppSidebarTrigger } from "@/features/sidebar/components/trigger";
 
@@ -36,10 +37,10 @@ export default function RootLayout({
       >
         <Providers>
           <AppSidebar />
-          <main className="h-screen w-screen">
+          <SidebarInset>
             <AppSidebarTrigger className="fixed top-2 left-2" />
             {children}
-          </main>
+          </SidebarInset>
           <ModeToggle className="fixed top-2 right-2" />
         </Providers>
       </body>
