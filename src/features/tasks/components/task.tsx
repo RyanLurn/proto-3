@@ -3,6 +3,7 @@ import { api } from "backend/_generated/api";
 import type { Doc } from "backend/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TaskOptions } from "@/features/tasks/components/task-options";
 import { cn } from "@/lib/utils";
 
 function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
@@ -43,6 +44,7 @@ function Task({ className, task }: { className?: string; task: Doc<"tasks"> }) {
         <p className="text-sm leading-none font-medium">{task.title}</p>
         <p className="text-sm text-muted-foreground">{task.description}</p>
       </div>
+      <TaskOptions className="ml-auto" taskId={task._id} />
     </div>
   );
 }

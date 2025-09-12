@@ -38,4 +38,14 @@ const updateStatus = mutation({
   }
 });
 
-export { create, list, updateStatus };
+const deleteOne = mutation({
+  args: {
+    taskId: v.id("tasks")
+  },
+  returns: v.null(),
+  handler: async (ctx, { taskId }) => {
+    await ctx.db.delete(taskId);
+  }
+});
+
+export { create, list, updateStatus, deleteOne };
